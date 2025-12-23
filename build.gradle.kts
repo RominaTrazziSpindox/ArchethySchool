@@ -17,7 +17,7 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    /* implementation("org.springframework.boot:spring-boot-starter-data-jpa") */
     implementation("io.github.cdimascio:dotenv-java:3.0.0")
     runtimeOnly("com.mysql:mysql-connector-j:8.4.0")
     compileOnly("org.projectlombok:lombok:1.18.36")

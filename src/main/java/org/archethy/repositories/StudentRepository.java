@@ -11,9 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class StudentRepository {
+public class StudentRepository implements IRepositoryRead<Student> {
+
 
     // Metodo per ottenere la Lista completa degli studenti
+    @Override
     public List<Student> getAll() {
 
         // Crea lista vuota
@@ -23,7 +25,7 @@ public class StudentRepository {
         try (Connection conn = DBConnection.getConnection()) {
 
             // Query da eseguire
-            String sql = "SELECT student_id, first_name, last_name, student_number, date_of_birth FROM Students";
+            String sql = "SELECT student_id, first_name, last_name, student_number, date_of_birth FROM student";
 
             // Metodo anti SQL Injection
             PreparedStatement ps = conn.prepareStatement(sql);
@@ -40,6 +42,7 @@ public class StudentRepository {
                 student.setLastname(rs.getString("last_name"));
 
                 // Campi specifici di Student
+                student.setStudentId((rs.getInt("student_id")));
                 student.setDateOfBirth(rs.getDate("date_of_birth").toLocalDate());
                 student.setStudentNumber(rs.getString("student_number"));
 
@@ -53,17 +56,51 @@ public class StudentRepository {
         // Restiuisci la lista di studenti letta dal db
         return studentList;
     }
-}
 
 
     // Metodo per ottenere i dati di un solo studente tramite l'id
-    /* @Override
+    @Override
     public Student getById(int id) {
-        return students.stream()
-                .filter(s -> s.getId() == id)
-                .findFirst()
-                .orElse(null);
+
+        // Crea lista vuota
+        List<Student> studentList = new ArrayList<>();
+
+        // Prova di connessione al database
+        try (Connection conn = DBConnection.getConnection()) {
+
+            // Query SQL parametrizzata da eseguire
+            // - seleziona i campi necessari dalla tabella Students
+            // - usa il placeholder '?' per evitare SQL Injection
+            String sql = "SELECT student_id, first_name, last_name, student_number, date_of_birth FROM student WHERE student_id = ?";
+
+            // Metodo anti SQL Injection
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            // Sostituisce il placeholder '?' con il valore dell'id passato al metodo. 1 è il numero della colonna sul db.
+            ps.setInt(1, id);
+
+            // Prova a eseguire la query e ottenere l'oggetto ResultSet
+            ResultSet rs = ps.executeQuery();
+
+            // Continua a leggere finché esiste un record successivo all'interno del database
+            if (rs.next()) {
+                Student student = new Student();
+                student.setStudentId((rs.getInt("student_id")));
+                student.setFirstname(rs.getString("first_name"));
+                student.setLastname(rs.getString("last_name"));
+                student.setStudentNumber(rs.getString("student_number"));
+                student.setDateOfBirth(rs.getDate("date_of_birth").toLocalDate());
+                return student;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return null;
+
     }
+}
 
 
 /*

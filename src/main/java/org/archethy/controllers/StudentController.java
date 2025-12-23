@@ -22,11 +22,18 @@ public class StudentController {
         return service.getAllStudents();
     }
 
-    /* @GetMapping("/{id}")
+   @GetMapping("/{id}")
     public Student getById(@PathVariable int id) {
+
+       Student s = service.getStudentById(id);
+       System.out.println("studentId = " + s.getStudentId());
+       System.out.println("class = " + s.getClass());
+
         return service.getStudentById(id);
     }
 
+
+    /*
     @PostMapping("/insert")
     public boolean insert(@RequestBody Student s) {
         return service.addStudent(s);

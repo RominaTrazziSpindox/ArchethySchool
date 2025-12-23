@@ -17,15 +17,18 @@ public class StudentService {
     }
     // End
 
+
+
     // Metodi CRUD
     public List<Student> getAllStudents() {
         return repository.getAll();
     }
 
-    /* public Student getStudentById(int id) {
+    public Student getStudentById(int id) {
         return repository.getById(id);
     }
 
+    /*
     public boolean addStudent(Student s) {
         return repository.insert(s);
     }
