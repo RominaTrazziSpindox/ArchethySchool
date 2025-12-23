@@ -19,7 +19,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("io.github.cdimascio:dotenv-java:3.0.0")
-    runtimeOnly("com.mysql:mysql-connector-j:9.1.0")
+    runtimeOnly("com.mysql:mysql-connector-j:8.4.0")
     compileOnly("org.projectlombok:lombok:1.18.36")
     annotationProcessor("org.projectlombok:lombok:1.18.36")
     testImplementation("org.springframework.boot:spring-boot-starter-test")

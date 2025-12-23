@@ -3,12 +3,16 @@ package org.archethy.models;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
+
 @Setter
 @Getter
 public class Student extends Person {
 
+    private int studentId;
     private String studentNumber;
-    private String dateOfBirth;
+    private LocalDate dateOfBirth;
 
     // Costruttore senza parametri
     public Student() {
@@ -17,8 +21,9 @@ public class Student extends Person {
     }
 
     // Costruttore con parametri che eredita dalla classe astratta \ superclasse
-    public Student(String firstname, String lastname, String dateOfBirth, String studentNumber) {
+    public Student(String firstname, String lastname, Integer id, LocalDate dateOfBirth, String studentNumber) {
         super(firstname, lastname);
+        this.studentId = id;
         this.dateOfBirth = dateOfBirth;
         this.studentNumber = studentNumber;
     }
@@ -27,10 +32,11 @@ public class Student extends Person {
     @Override
     public String toString() {
         return "Student{" +
-                "dateOfBirth='" + dateOfBirth + '\'' +
-                ", studentNumber='" + studentNumber + '\'' +
+                "studentId=" + studentId +
                 ", firstname='" + firstname + '\'' +
                 ", lastname='" + lastname + '\'' +
+                ", studentNumber='" + studentNumber + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
                 '}';
     }
 }

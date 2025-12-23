@@ -22,7 +22,7 @@ public class StudentService {
         return repository.getAll();
     }
 
-    public Student getStudentById(int id) {
+    /* public Student getStudentById(int id) {
         return repository.getById(id);
     }
 
@@ -36,5 +36,5 @@ public class StudentService {
 
     public boolean deleteStudent(int id) {
         return repository.delete(id);
-    }
+    } */
 }

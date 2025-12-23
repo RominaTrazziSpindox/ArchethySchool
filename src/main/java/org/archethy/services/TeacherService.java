@@ -2,9 +2,11 @@ package org.archethy.services;
 
 import org.archethy.models.Teacher;
 import org.archethy.repositories.TeacherRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class TeacherService {
 
     // Dependency Injection di Repository (= Autowired di StudentRepository)

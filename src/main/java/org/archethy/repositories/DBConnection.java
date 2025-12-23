@@ -62,7 +62,8 @@ public class DBConnection {
             }
         }
 
-        return null; // Se tutti i tentativi falliscono
+        // Se tutti i tentativi falliscono
+        return null;
     }
 
     // Metodo statico per chiudere la connessione
