@@ -3,15 +3,12 @@ package org.archethy.repositories;
 import org.archethy.models.Student;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class StudentRepository implements IRepositoryRead<Student> {
+public class StudentRepository implements IRepositoryRead<Student>, IRepositoryWrite<Student> {
 
 
     // Metodo per ottenere la Lista completa degli studenti
@@ -38,6 +35,7 @@ public class StudentRepository implements IRepositoryRead<Student> {
                 Student student = new Student();
 
                 // Campi ereditati da Person
+                student.setStudentId((rs.getInt("student_id")));
                 student.setFirstname(rs.getString("first_name"));
                 student.setLastname(rs.getString("last_name"));
 
@@ -62,9 +60,6 @@ public class StudentRepository implements IRepositoryRead<Student> {
     @Override
     public Student getById(int id) {
 
-        // Crea lista vuota
-        List<Student> studentList = new ArrayList<>();
-
         // Prova di connessione al database
         try (Connection conn = DBConnection.getConnection()) {
 
@@ -79,17 +74,19 @@ public class StudentRepository implements IRepositoryRead<Student> {
             // Sostituisce il placeholder '?' con il valore dell'id passato al metodo. 1 è il numero della colonna sul db.
             ps.setInt(1, id);
 
-            // Prova a eseguire la query e ottenere l'oggetto ResultSet
+            // Esegui la query
             ResultSet rs = ps.executeQuery();
 
             // Continua a leggere finché esiste un record successivo all'interno del database
-            if (rs.next()) {
+            while (rs.next()) {
                 Student student = new Student();
                 student.setStudentId((rs.getInt("student_id")));
                 student.setFirstname(rs.getString("first_name"));
                 student.setLastname(rs.getString("last_name"));
                 student.setStudentNumber(rs.getString("student_number"));
                 student.setDateOfBirth(rs.getDate("date_of_birth").toLocalDate());
+
+                // Restituisci il singolo studente
                 return student;
             }
 
@@ -97,39 +94,70 @@ public class StudentRepository implements IRepositoryRead<Student> {
             throw new RuntimeException(e);
         }
 
+        // Se la lettura non va a buon fine
         return null;
-
-    }
-}
-
-
-/*
-    public StudentRepository() {
-        students.add(new Student("Alice", "Rossi", "STU001", "2001-05-21"));
-        students.add(new Student("Marco", "Verdi", "STU002", "2000-12-10"));
     }
 
 
+    // Metodo per inserire un nuovo oggetto Studente
     @Override
     public boolean insert(Student obj) {
-        return students.add(obj);
+
+        // Prova di connessione al database
+        try (Connection conn = DBConnection.getConnection()) {
+
+            // Query da eseguire. Inserisco inizialmente delle wildcard come valori. Non inserisco id.
+            String sql = "INSERT INTO student (first_name, last_name, student_number, date_of_birth)" +
+                    "VALUES (?, ?, ?, ?)";
+
+            // Metodo anti SQL Injection
+            PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+            /* Setta i valori delle singole colonne come proprietà di un generico oggetto obj ad esclusione dell'id
+            (è un auto-increment generato dal db, va recuperato dopo). I metodi vengono presi dal Model. */
+            ps.setString(1, obj.getFirstname());
+            ps.setString(2, obj.getLastname());
+            ps.setString(3, obj.getStudentNumber());
+            ps.setDate(4, Date.valueOf(obj.getDateOfBirth()));
+
+            /* Aggiorna il database eseguendo l'insert e assegna il valore numerico che questo metodo restituisce alla variabile
+            affectedRows (= righe coinvolte nell'aggiornamento del database') */
+            int affectedRows = ps.executeUpdate();
+
+            // Recupera l'id generato dal DB con il metodo ps.getGeratedKeys e impostalo
+            try (ResultSet keys = ps.getGeneratedKeys()) {
+                if (keys.next()) {
+                    obj.setStudentId(keys.getInt(1));
+                }
+            }
+
+            // Se il numero di righe modificate è > 0, significa che l'operazione è andata a buon fine
+            if (affectedRows > 0) {
+                return true;
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Errore nella query: " + e.getErrorCode() + " " + e.getMessage());
+            return false;
+        }
+
+        return false;
     }
+
 
     @Override
     public boolean update(Student obj) {
-        for (int i = 0; i < students.size(); i++) {
-            if (students.get(i).getId() == obj.getId()) {
-                students.set(i, obj);
-                return true;
-            }
-        }
+
         return false;
     }
 
     @Override
     public boolean delete(int id) {
-        return students.removeIf(s -> s.getId() == id);
+        return false;
     }
-}*/
+}
+
+
+
 
 

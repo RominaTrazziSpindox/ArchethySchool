@@ -24,21 +24,14 @@ public class StudentController {
 
    @GetMapping("/{id}")
     public Student getById(@PathVariable int id) {
-
-       Student s = service.getStudentById(id);
-       System.out.println("studentId = " + s.getStudentId());
-       System.out.println("class = " + s.getClass());
-
         return service.getStudentById(id);
     }
 
-
-    /*
     @PostMapping("/insert")
-    public boolean insert(@RequestBody Student s) {
-        return service.addStudent(s);
+    public boolean insert(@RequestBody Student student) {
+        return service.addStudent(student);
     }
-
+/*
     @PutMapping("/update")
     public boolean update(@RequestBody Student s) {
         return service.updateStudent(s);
