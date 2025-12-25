@@ -33,12 +33,12 @@ public class StudentController {
     }
 /*
     @PutMapping("/update")
-    public boolean update(@RequestBody Student s) {
+    public boolean update(@RequestBody Student student) {
         return service.updateStudent(s);
-    }
+    } */
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public boolean delete(@PathVariable int id) {
         return service.deleteStudent(id);
-    } */
+    }
 }

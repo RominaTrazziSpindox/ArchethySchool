@@ -9,7 +9,7 @@ import java.util.List;
 @Service
 public class TeacherService {
 
-    // Dependency Injection di Repository (= Autowired di StudentRepository)
+    // Dependency Injection di Repository (= Autowired di TeacherRepository)
     private final TeacherRepository repository;
 
     public TeacherService(TeacherRepository repository) {

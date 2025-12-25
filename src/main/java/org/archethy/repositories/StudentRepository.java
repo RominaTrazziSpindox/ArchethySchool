@@ -56,7 +56,7 @@ public class StudentRepository implements IRepositoryRead<Student>, IRepositoryW
     }
 
 
-    // Metodo per ottenere i dati di un solo studente tramite l'id
+    // Metodo per ottenere i dati di un solo (oggetto) studente tramite l'id
     @Override
     public Student getById(int id) {
 
@@ -99,7 +99,7 @@ public class StudentRepository implements IRepositoryRead<Student>, IRepositoryW
     }
 
 
-    // Metodo per inserire un nuovo oggetto Studente
+    // Metodo per inserire un nuovo (oggetto) studente
     @Override
     public boolean insert(Student obj) {
 
@@ -145,14 +145,45 @@ public class StudentRepository implements IRepositoryRead<Student>, IRepositoryW
     }
 
 
+    // Metodo per eliminare un (oggetto) studente tramite l'id
     @Override
-    public boolean update(Student obj) {
+    public boolean delete(int id) {
+
+        // Prova di connessione al database
+        try (Connection conn = DBConnection.getConnection()) {
+
+            // Query da eseguire. Inserisco L'id come wildcard.
+            String sql = "DELETE FROM student WHERE studentID=?";
+
+            // Metodo anti SQL Injection
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            // Selezione dell'id (1 è il numero della colonna del database, id è l'id passato come parametro)
+            ps.setInt(1, id);
+
+            /* Aggiorna il database eseguendo l'insert e assegna il valore numerico che questo metodo restituisce alla variabile
+            affectedRows (= righe coinvolte nell'aggiornamento del database') */
+            int affectedRows = ps.executeUpdate();
+
+            // Se il numero di righe modificate è > 0, significa che l'operazione è andata a buon fine
+            if (affectedRows > 0) {
+                return true;
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Errore nella query: " + e.getErrorCode() + " " + e.getMessage());
+            return false;
+            // throw new RuntimeException(e);
+        }
 
         return false;
     }
 
+
+
     @Override
-    public boolean delete(int id) {
+    public boolean update(Student obj) {
+
         return false;
     }
 }

@@ -38,7 +38,10 @@ public class StudentService {
         return repository.update(s);
     }
 
+*/
+
+
     public boolean deleteStudent(int id) {
         return repository.delete(id);
-    } */
+    }
 }
