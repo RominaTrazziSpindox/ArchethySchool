@@ -17,6 +17,7 @@ public class StudentController {
     }
     // End
 
+    // Endpoint CRUD
     @GetMapping("/all")
     public List<Student> getAll() {
         return service.getAllStudents();
@@ -31,14 +32,15 @@ public class StudentController {
     public boolean insert(@RequestBody Student student) {
         return service.addStudent(student);
     }
-/*
+
     @PutMapping("/update")
     public boolean update(@RequestBody Student student) {
-        return service.updateStudent(s);
-    } */
+        return service.updateStudent(student);
+    }
 
     @DeleteMapping("/{id}")
     public boolean delete(@PathVariable int id) {
         return service.deleteStudent(id);
     }
 }
+

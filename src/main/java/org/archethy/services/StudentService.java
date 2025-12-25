@@ -31,17 +31,13 @@ public class StudentService {
         return repository.insert(student);
     }
 
-
-
- /*
-    public boolean updateStudent(Student s) {
-        return repository.update(s);
+    public boolean updateStudent(Student student) {
+        return repository.update(student);
     }
-
-*/
-
 
     public boolean deleteStudent(int id) {
         return repository.delete(id);
     }
 }
+
+

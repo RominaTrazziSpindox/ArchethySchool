@@ -1,5 +1,6 @@
 package org.archethy.repositories;
 
+import lombok.NonNull;
 import org.archethy.models.Student;
 import org.springframework.stereotype.Repository;
 
@@ -145,6 +146,12 @@ public class StudentRepository implements IRepositoryRead<Student>, IRepositoryW
     }
 
 
+    @Override
+    public boolean update(Student obj) {
+
+        return false;
+    }
+
     // Metodo per eliminare un (oggetto) studente tramite l'id
     @Override
     public boolean delete(int id) {
@@ -152,8 +159,8 @@ public class StudentRepository implements IRepositoryRead<Student>, IRepositoryW
         // Prova di connessione al database
         try (Connection conn = DBConnection.getConnection()) {
 
-            // Query da eseguire. Inserisco L'id come wildcard.
-            String sql = "DELETE FROM student WHERE studentID=?";
+            // Query da eseguire. L'id è una wildcard. Usare i nomi delle colonne sul DB, non del Model.
+            String sql = "DELETE FROM student WHERE student_id=?";
 
             // Metodo anti SQL Injection
             PreparedStatement ps = conn.prepareStatement(sql);
@@ -172,17 +179,7 @@ public class StudentRepository implements IRepositoryRead<Student>, IRepositoryW
 
         } catch (SQLException e) {
             System.err.println("Errore nella query: " + e.getErrorCode() + " " + e.getMessage());
-            return false;
-            // throw new RuntimeException(e);
         }
-
-        return false;
-    }
-
-
-
-    @Override
-    public boolean update(Student obj) {
 
         return false;
     }
