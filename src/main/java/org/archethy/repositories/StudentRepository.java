@@ -17,8 +17,6 @@ public class StudentRepository implements IRepositoryRead<Student>, IRepositoryW
         // Prova di connessione al database
         try (Connection conn = DBConnection.getConnection()) {
 
-            System.out.println("DB URL = " + conn.getMetaData().getURL());
-
             // Crea lista vuota
             List<Student> studentList = new ArrayList<>();
 
